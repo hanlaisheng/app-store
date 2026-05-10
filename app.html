@@ -184,6 +184,18 @@
             margin-top: 10px;
         }
 
+        /* 密码提示 */
+        .password-tip {
+            text-align: center;
+            color: #667eea;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            font-weight: 600;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 8px 15px;
+            border-radius: 8px;
+        }
+
         /* 加载状态 */
         .loading {
             text-align: center;
@@ -287,7 +299,8 @@
                 icon: '📱',
                 size: '10MB',
                 category: '工具',
-                downloadUrl: `https://github.com/${GITHUB_REPO}/releases/latest/download/app-release.apk`,
+                downloadUrl: 'https://wwbqy.lanzoub.com/ijaMz3p71v0d',
+                password: '68',
                 changelog: '初始版本发布'
             }
         ];
@@ -315,9 +328,10 @@
                         <span class="app-size">📦 ${app.size}</span>
                         <span class="app-category">${app.category}</span>
                     </div>
-                    <a href="${app.downloadUrl}" class="download-btn" onclick="trackDownload('${app.id}')">
+                    <a href="${app.downloadUrl}" class="download-btn" onclick="trackDownload('${app.id}')" target="_blank">
                         <span class="download-icon">⬇️</span> 下载 APK
                     </a>
+                    ${app.password ? `<p class="password-tip">🔑 提取密码: ${app.password}</p>` : ''}
                 </div>
             `).join('');
         }
