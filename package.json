@@ -1,0 +1,12 @@
+{
+  "name": "app-store-vercel",
+  "version": "1.0.0",
+  "description": "个人应用商店 - Vercel 部署",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "devDependencies": {
+    "vercel": "^32.0.0"
+  }
+}
