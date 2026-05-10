@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的应用商店</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 头部 */
+        .header {
+            color: white;
+            text-align: center;
+            padding: 40px 20px 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* 搜索框 */
+        .search-box {
+            max-width: 600px;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            outline: none;
+        }
+
+        .search-box input:focus {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        /* 应用列表 */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .app-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .app-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .app-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            margin-right: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .app-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .app-info .version {
+            color: #667eea;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .app-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .app-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .app-size {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .app-category {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* 下载按钮 */
+        .download-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        .download-icon {
+            margin-right: 8px;
+        }
+
+        /* 下载提示 */
+        .download-tip {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        /* 加载状态 */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* 底部 */
+        .footer {
+            color: rgba(255,255,255,0.8);
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+            font-size: 0.95rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .apps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .app-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .app-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .app-info {
+                text-align: center;
+            }
+
+            .app-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .app-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .app-card:nth-child(2) { animation-delay: 0.1s; }
+        .app-card:nth-child(3) { animation-delay: 0.2s; }
+        .app-card:nth-child(4) { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📦 我的应用商店</h1>
+            <p>免费下载、自动更新、安全可靠</p>
+        </header>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 搜索应用..." oninput="filterApps()">
+        </div>
+
+        <main>
+            <div class="apps-grid" id="appsGrid">
+                <div class="loading">加载中...</div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2026 我的应用商店 | 基于 GitHub Pages 构建</p>
+            <p class="download-tip">💡 点击下载按钮即可下载 APK 文件</p>
+        </footer>
+    </div>
+
+    <script>
+        // 应用数据 - 从 GitHub Releases 获取
+        const GITHUB_REPO = 'hanlaisheng/app-store';
+
+        // 应用列表（可以从 API 或静态 JSON 加载）
+        const apps = [
+            {
+                id: 'my-app',
+                name: '我的应用',
+                description: '这是一个示例应用，你可以替换为你的应用信息。支持自动更新，安全可靠。',
+                version: '1.0.0',
+                icon: '📱',
+                size: '10MB',
+                category: '工具',
+                downloadUrl: `https://github.com/${GITHUB_REPO}/releases/latest/download/app-release.apk`,
+                changelog: '初始版本发布'
+            }
+        ];
+
+        // 渲染应用列表
+        function renderApps(appsToRender = apps) {
+            const grid = document.getElementById('appsGrid');
+
+            if (appsToRender.length === 0) {
+                grid.innerHTML = '<div class="loading">暂无应用</div>';
+                return;
+            }
+
+            grid.innerHTML = appsToRender.map(app => `
+                <div class="app-card">
+                    <div class="app-header">
+                        <div class="app-icon">${app.icon}</div>
+                        <div class="app-info">
+                            <h3>${app.name}</h3>
+                            <span class="version">v${app.version}</span>
+                        </div>
+                    </div>
+                    <p class="app-description">${app.description}</p>
+                    <div class="app-meta">
+                        <span class="app-size">📦 ${app.size}</span>
+                        <span class="app-category">${app.category}</span>
+                    </div>
+                    <a href="${app.downloadUrl}" class="download-btn" onclick="trackDownload('${app.id}')">
+                        <span class="download-icon">⬇️</span> 下载 APK
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        // 搜索过滤
+        function filterApps() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = apps.filter(app =>
+                app.name.toLowerCase().includes(searchTerm) ||
+                app.description.toLowerCase().includes(searchTerm) ||
+                app.category.toLowerCase().includes(searchTerm)
+            );
+            renderApps(filtered);
+        }
+
+        // 记录下载（可选）
+        function trackDownload(appId) {
+            console.log(`下载应用: ${appId}`);
+            // 这里可以添加下载统计逻辑
+        }
+
+        // 初始化
+        renderApps();
+    </script>
+</body>
+</html>
